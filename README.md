@@ -66,7 +66,6 @@ Do not forget to replace `apiKey` with your SendGrid API key. It must have permi
         ->setSubject('Example Email Subject')
         ->setHtmlBody('Dear -username-,<br><br>Example email HTML body.')
         ->setTextBody('Dear -username-,\n\nExample email text body.')
-        ->addSubstitution('-username-', $user->username)
         ->send();
 
     if ($message === true) {
@@ -101,9 +100,6 @@ If you want to send to multiple recipients, you need to use the below method to 
                 //'cc' => 'cc@example.com',
                 //'bcc' => 'bcc@example.com',
                 //'subject' => 'Hey -username-, Custom message for you!',
-                //'headers' => [
-                //    'X-Track-RecipId' => $user->id,
-                //],
                 'substitutions' => [
                     '-username-' => $user->username,
                 ],

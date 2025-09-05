@@ -14,7 +14,7 @@ return static function (ECSConfig $ecsConfig): void {
         \PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer::class,
 
         // Remove sniff, from common/spaces
-        PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer::class,
+        \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer::class,
         \PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer::class,
         \PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class,
     ]);
