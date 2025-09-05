@@ -6,23 +6,15 @@ use Yii;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 
-/**
- *
- */
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * {@inheritDoc}
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->mockWebApplication();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -34,8 +26,6 @@ class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $config The configuration array to override the default application configuration.
      * @param string $appClass The fully qualified name of the application class to instantiate. Defaults to '\yii\web\Application'.
-     *
-     * @return void This method does not return a value.
      */
     protected function mockWebApplication(array $config = [], string $appClass = '\yii\web\Application'): void
     {
@@ -74,7 +64,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
                 'adminEmail' => 'admin@example.com',
             ],
         ], $config));
-//        FileHelper::createDirectory(Yii::getAlias('@yiiunit/extensions/mandrill/runtime'));
+        //        FileHelper::createDirectory(Yii::getAlias('@yiiunit/extensions/mandrill/runtime'));
     }
 
     /**
@@ -84,6 +74,6 @@ class TestCase extends \PHPUnit\Framework\TestCase
     {
         Yii::$app = null;
         Yii::$container = new Container();
-//        FileHelper::removeDirectory(Yii::getAlias('@yiiunit/extensions/mandrill/runtime'));
+        //        FileHelper::removeDirectory(Yii::getAlias('@yiiunit/extensions/mandrill/runtime'));
     }
 }

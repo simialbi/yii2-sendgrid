@@ -7,24 +7,19 @@ use Yii;
 
 class SendTest extends TestCase
 {
-    /**
-     * @var string
-     */
     private string $_apiKey;
 
-    /**
-     * @var string
-     */
+
     private string $_fromAddress;
 
-    /**
-     * @var string
-     */
+
     private string $_toAddress;
 
     public function testSendMessage()
     {
-        $mailer = new Mailer(['apiKey' => $this->_apiKey]);
+        $mailer = new Mailer([
+            'apiKey' => $this->_apiKey,
+        ]);
         $result = $mailer->compose('test')
             ->setFrom($this->_fromAddress)
             ->setTo($this->_toAddress)
@@ -45,7 +40,9 @@ class SendTest extends TestCase
      */
     public function testSendAt()
     {
-        $mailer = new Mailer(['apiKey' => $this->_apiKey]);
+        $mailer = new Mailer([
+            'apiKey' => $this->_apiKey,
+        ]);
         $result = $mailer->compose('test')
             ->setFrom($this->_fromAddress)
             ->setTo($this->_toAddress)
@@ -60,9 +57,7 @@ class SendTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -76,17 +71,13 @@ class SendTest extends TestCase
         }
     }
 
-    /**
-     * @return string
-     */
+
     private function getTestImagePath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'test.png';
     }
 
-    /**
-     * @return string
-     */
+
     private function getTestPdfPath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'test.pdf';

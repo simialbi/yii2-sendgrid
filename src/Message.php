@@ -52,38 +52,47 @@ class Message extends BaseMessage
      * application will be used.
      */
     private ?string $_fromAddress = null;
+
     /**
      * @var ?string Contains the custom from name. If empty the app name will be used.
      */
     private ?string $_fromName = null;
+
     /**
      * @var array Contains the TO address list.
      */
     private array $_to = [];
+
     /**
      * @var array|string|null Contains the reply-to address list.
      */
     private array|string|null $_replyTo = null;
+
     /**
      * @var array Contains the CC address list.
      */
     private array $_cc = [];
+
     /**
      * @var array Contains the BCC address list.
      */
     private array $_bcc = [];
+
     /**
      * @var ?string Contains the html-encoded subject.
      */
     private ?string $_subject = null;
+
     /**
      * @var ?string Contains the email raw text.
      */
     private ?string $_text = null;
+
     /**
      * @var ?string Contains the email HTML test.
      */
     private ?string $_html = null;
+
     /**
      * @var array Contains the list of attachments already processed to be used by SendGrid.
      * Each entry within the array is an array with the following keys:
@@ -97,6 +106,7 @@ class Message extends BaseMessage
      * ```
      */
     private array $_attachments = [];
+
     /**
      * @var ?string The name of the dedicated ip pool that should be used to send the message. If you do not have any
      * dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will
@@ -144,9 +154,7 @@ class Message extends BaseMessage
     /**
      * SendGrid does not let users set a charset.
      *
-     * @return null
      * @see self::setCharset() setter
-     *
      */
     public function getCharset()
     {
@@ -160,17 +168,14 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getCharset() getter
-     *
      */
-    public function setCharset($charset): Message
+    public function setCharset($charset): self
     {
         return $this;
     }
 
     /**
      * The name of the dedicated ip pool that should is set to be used to send the message.
-     *
-     * @return string|null
      */
     public function getIpPool(): ?string
     {
@@ -185,7 +190,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function setIpPool(string $ipPool): Message
+    public function setIpPool(string $ipPool): self
     {
         $this->_ipPool = $ipPool;
 
@@ -210,7 +215,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function setSendAt(string|int $sendAt): Message
+    public function setSendAt(string|int $sendAt): self
     {
         if (!is_int($sendAt)) {
             $sendAt = Yii::$app->formatter->asTimestamp($sendAt);
@@ -233,9 +238,7 @@ class Message extends BaseMessage
      * The default value for the sender address is the adminEmail parameter
      * inside `config/params.php`.
      *
-     * @return string
      * @see self::setFrom() setter
-     *
      */
     public function getFrom(): string
     {
@@ -262,9 +265,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getFrom() getter
-     *
      */
-    public function setFrom($from): Message
+    public function setFrom($from): self
     {
         if (is_string($from) && filter_var($from, FILTER_VALIDATE_EMAIL)) {
             $this->_fromAddress = $from;
@@ -299,9 +301,7 @@ class Message extends BaseMessage
      * ]
      * ```
      *
-     * @return array|null
      * @see self::setTo() setter
-     *
      */
     public function getTo(): ?array
     {
@@ -318,9 +318,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getTo() getter
-     *
      */
-    public function setTo($to): Message
+    public function setTo($to): self
     {
         $this->_to = (array)$to;
 
@@ -337,9 +336,7 @@ class Message extends BaseMessage
      * ]
      * ```
      *
-     * @return array|null
      * @see self::setReplyTo() setter
-     *
      */
     public function getReplyTo(): ?array
     {
@@ -356,9 +353,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getReplyTo() getter
-     *
      */
-    public function setReplyTo($replyTo): Message
+    public function setReplyTo($replyTo): self
     {
         $this->_replyTo = $replyTo;
 
@@ -375,9 +371,7 @@ class Message extends BaseMessage
      * ]
      * ```
      *
-     * @return array|null
      * @see self::setCc() setter
-     *
      */
     public function getCc(): ?array
     {
@@ -394,9 +388,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getCc() getter
-     *
      */
-    public function setCc($cc): Message
+    public function setCc($cc): self
     {
         $this->_cc = (array)$cc;
 
@@ -413,9 +406,7 @@ class Message extends BaseMessage
      * ]
      * ```
      *
-     * @return array
      * @see self::setBcc() setter
-     *
      */
     public function getBcc(): array
     {
@@ -432,9 +423,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getBcc() getter
-     *
      */
-    public function setBcc($bcc): Message
+    public function setBcc($bcc): self
     {
         $this->_bcc = (array)$bcc;
 
@@ -444,9 +434,7 @@ class Message extends BaseMessage
     /**
      * Returns the html-encoded subject.
      *
-     * @return string|null
      * @see self::setSubject() setter
-     *
      */
     public function getSubject(): ?string
     {
@@ -461,9 +449,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getSubject() getter
-     *
      */
-    public function setSubject($subject): Message
+    public function setSubject($subject): self
     {
         if (is_string($subject)) {
             $this->_subject = trim($subject);
@@ -475,9 +462,7 @@ class Message extends BaseMessage
     /**
      * Returns the html-purified version of the raw text body.
      *
-     * @return string|null
      * @see self::setTextBody() setter
-     *
      */
     public function getTextBody(): ?string
     {
@@ -492,9 +477,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getTextBody() getter
-     *
      */
-    public function setTextBody($text): Message
+    public function setTextBody($text): self
     {
         if (is_string($text)) {
             $this->_text = HtmlPurifier::process($text);
@@ -506,9 +490,7 @@ class Message extends BaseMessage
     /**
      * Returns the html purified version of the html body.
      *
-     * @return string|null
      * @see self::setHtmlBody() setter
-     *
      */
     public function getHtmlBody(): ?string
     {
@@ -522,9 +504,8 @@ class Message extends BaseMessage
      *
      * @return static
      * @see self::getHtmlBody() getter
-     *
      */
-    public function setHtmlBody($html): Message
+    public function setHtmlBody($html): self
     {
         if (is_string($html)) {
             $this->_html = $html;
@@ -536,7 +517,6 @@ class Message extends BaseMessage
     /**
      * Returns the attachments array.
      *
-     * @return array
      * @see self::attachContent() setter for binary
      *
      * @see self::attach() setter for file name
@@ -558,9 +538,8 @@ class Message extends BaseMessage
      * @return static
      * @throws \yii\base\InvalidConfigException|\Exception
      * @see self::getAttachments() getter
-     *
      */
-    public function attach($fileName, array $options = []): Message
+    public function attach($fileName, array $options = []): self
     {
         if (file_exists($fileName) && !is_dir($fileName)) {
             $purifiedOptions = [
@@ -585,9 +564,8 @@ class Message extends BaseMessage
      * @return static
      * @throws \Exception
      * @see self::getAttachments() getter
-     *
      */
-    public function attachContent($content, array $options = []): Message
+    public function attachContent($content, array $options = []): self
     {
         $purifiedOptions = is_array($options) ? $options : [];
 
@@ -596,7 +574,7 @@ class Message extends BaseMessage
                 base64_encode($content),
                 ArrayHelper::getValue($purifiedOptions, 'contentType', $this->getMimeTypeFromBinary($content)),
                 ArrayHelper::getValue($purifiedOptions, 'fileName', ('file_' . count($this->_attachments))),
-                'attachment'
+                'attachment',
             ];
         }
 
@@ -635,9 +613,8 @@ class Message extends BaseMessage
      * @return static
      * @throws \yii\base\InvalidConfigException|\Exception
      * @see self::getEmbeddedContent() getter
-     *
      */
-    public function embed($fileName, array $options = []): Message
+    public function embed($fileName, array $options = []): self
     {
         if (file_exists($fileName) && !is_dir($fileName) && StringHelper::startsWith(FileHelper::getMimeType($fileName), 'image')) {
             $purifiedOptions = [
@@ -663,7 +640,7 @@ class Message extends BaseMessage
      * @throws \Exception
      * @see self::getEmbeddedContent() getter
      */
-    public function embedContent($content, array $options = []): Message
+    public function embedContent($content, array $options = []): self
     {
         $purifiedOptions = is_array($options) ? $options : [];
         $mimeType = $this->getMimeTypeFromBinary($content);
@@ -673,7 +650,7 @@ class Message extends BaseMessage
                 base64_encode($content),
                 ArrayHelper::getValue($purifiedOptions, 'contentType', $mimeType),
                 ArrayHelper::getValue($purifiedOptions, 'fileName', ('file_' . count($this->_attachments))),
-                'inline'
+                'inline',
             ];
         }
 
@@ -682,8 +659,6 @@ class Message extends BaseMessage
 
     /**
      * Returns the subaccount to use for this message.
-     *
-     * @return string|null
      */
     public function getSubaccount(): ?string
     {
@@ -697,7 +672,7 @@ class Message extends BaseMessage
      *
      * @return Message Returns the current message instance.
      */
-    public function setSubaccount(string $subaccount): Message
+    public function setSubaccount(string $subaccount): self
     {
         $this->_subaccount = $subaccount;
 
@@ -706,8 +681,6 @@ class Message extends BaseMessage
 
     /**
      * Returns the personalizations for the message.
-     *
-     * @return array
      */
     public function getPersonalizations(): array
     {
@@ -718,10 +691,8 @@ class Message extends BaseMessage
      * Sets the personalizations for the message.
      *
      * @param array $personalizations An array of personalizations to set.
-     *
-     * @return Message
      */
-    public function setPersonalizations(array $personalizations): Message
+    public function setPersonalizations(array $personalizations): self
     {
         foreach ($personalizations as $personalization) {
             $this->addPersonalization($personalization);
@@ -739,7 +710,7 @@ class Message extends BaseMessage
      * @return Message Returns the current message object with the added personalization.
      * @throws TypeException
      */
-    public function addPersonalization(Personalization|array $personalization): Message
+    public function addPersonalization(Personalization|array $personalization): self
     {
         if ($personalization instanceof Personalization && !empty($personalization->getTos())) {
             $this->_personalizations[] = $personalization;
@@ -751,9 +722,11 @@ class Message extends BaseMessage
             } elseif (is_array($pTo)) {
                 foreach ($pTo as $to => $name) {
                     if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
-                        $p->addTo(new To($to, $name));;
+                        $p->addTo(new To($to, $name));
+                        ;
                     } elseif (filter_var($name, FILTER_VALIDATE_EMAIL)) {
-                        $p->addTo(new To($name));;
+                        $p->addTo(new To($name));
+                        ;
                     } elseif (is_array($name) && ArrayHelper::isIndexed($name, true) && filter_var($name[0], FILTER_VALIDATE_EMAIL)) {
                         foreach ($name as $email) {
                             $p->addTo(new To($email));
@@ -767,9 +740,11 @@ class Message extends BaseMessage
                 } elseif (is_array($personalization['cc'])) {
                     foreach ($personalization['cc'] as $to => $name) {
                         if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
-                            $p->addCc(new Cc($to, $name));;
+                            $p->addCc(new Cc($to, $name));
+                            ;
                         } elseif (filter_var($name, FILTER_VALIDATE_EMAIL)) {
-                            $p->addCc(new Cc($name));;
+                            $p->addCc(new Cc($name));
+                            ;
                         } elseif (is_array($name) && ArrayHelper::isIndexed($name, true) && filter_var($name[0], FILTER_VALIDATE_EMAIL)) {
                             foreach ($name as $email) {
                                 $p->addCc(new Cc($email));
@@ -784,9 +759,11 @@ class Message extends BaseMessage
                 } elseif (is_array($personalization['bcc'])) {
                     foreach ($personalization['bcc'] as $to => $name) {
                         if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
-                            $p->addBcc(new Bcc($to, $name));;
+                            $p->addBcc(new Bcc($to, $name));
+                            ;
                         } elseif (filter_var($name, FILTER_VALIDATE_EMAIL)) {
-                            $p->addBcc(new Bcc($name));;
+                            $p->addBcc(new Bcc($name));
+                            ;
                         } elseif (is_array($name) && ArrayHelper::isIndexed($name, true) && filter_var($name[0], FILTER_VALIDATE_EMAIL)) {
                             foreach ($name as $email) {
                                 $p->addBcc(new Bcc($email));
@@ -823,7 +800,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function setAsImportant(): Message
+    public function setAsImportant(): self
     {
         $this->_important = true;
 
@@ -836,7 +813,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function setAsNotImportant(): Message
+    public function setAsNotImportant(): self
     {
         $this->_important = false;
 
@@ -857,7 +834,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function enableOpensTracking(): Message
+    public function enableOpensTracking(): self
     {
         $this->_trackOpens = true;
 
@@ -869,7 +846,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function disableOpensTracking(): Message
+    public function disableOpensTracking(): self
     {
         $this->_trackOpens = false;
 
@@ -892,7 +869,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function enableClicksTracking(): Message
+    public function enableClicksTracking(): self
     {
         $this->_trackClicks = true;
 
@@ -904,7 +881,7 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function disableClicksTracking(): Message
+    public function disableClicksTracking(): self
     {
         $this->_trackClicks = false;
 
@@ -932,8 +909,6 @@ class Message extends BaseMessage
      *  'utm_content',
      *  'utm_campaign'
      * ]
-     *
-     * @return array
      */
     public function getGoogleAnalytics(): array
     {
@@ -956,14 +931,14 @@ class Message extends BaseMessage
      *
      * @return static
      */
-    public function setGoogleAnalytics(string $utm_campaign, string $utm_source = 'email_campaign', string $utm_medium = 'email', ?string $utm_term = null, ?string $utm_content = null): Message
+    public function setGoogleAnalytics(string $utm_campaign, string $utm_source = 'email_campaign', string $utm_medium = 'email', ?string $utm_term = null, ?string $utm_content = null): self
     {
         $this->_googleAnalytics = [
             $utm_source,
             $utm_medium,
             $utm_term,
             $utm_content,
-            $utm_campaign
+            $utm_campaign,
         ];
 
         return $this;
@@ -972,7 +947,6 @@ class Message extends BaseMessage
     /**
      * Returns the string representation of this message.
      *
-     * @return string
      * @throws TypeException
      */
     public function toString(): string
@@ -981,7 +955,6 @@ class Message extends BaseMessage
     }
 
     /**
-     * @return Mail
      * @throws \SendGrid\Mail\TypeException
      */
     public function getSendGridMessage(): Mail
@@ -1037,7 +1010,7 @@ class Message extends BaseMessage
             $mail->addContent('text/html', $this->_html);
         }
         $mail->addAttachments($this->_attachments);
-        if (!is_null($this->_ipPool)) {
+        if ($this->_ipPool !== null) {
             $mail->setIpPoolName($this->_ipPool);
         }
         $mail->setClickTracking($this->_trackClicks);
@@ -1053,10 +1026,6 @@ class Message extends BaseMessage
 
     /**
      * Returns the Mime Type from the file binary.
-     *
-     * @param string $binary
-     *
-     * @return string
      */
     private function getMimeTypeFromBinary(string $binary): string
     {
@@ -1070,8 +1039,6 @@ class Message extends BaseMessage
 
     /**
      * Returns the from name default value if no one was set by the user.
-     *
-     * @return string|null
      */
     private function getFromName(): ?string
     {
@@ -1080,8 +1047,6 @@ class Message extends BaseMessage
 
     /**
      * Returns the from address default value if no one was set by the user.
-     *
-     * @return string|null
      */
     private function getFromAddress(): ?string
     {

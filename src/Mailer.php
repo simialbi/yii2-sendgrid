@@ -65,7 +65,7 @@ class Mailer extends BaseMailer
     public function init(): void
     {
         if (empty($this->_apiKey)) {
-            throw new InvalidConfigException('"' . get_class($this) . '::apiKey" cannot be null.');
+            throw new InvalidConfigException('"' . static::class . '::apiKey" cannot be null.');
         }
 
         try {
@@ -81,22 +81,19 @@ class Mailer extends BaseMailer
      *
      * @param string $apiKey The SendGrid API Key
      *
-     * @return void
      * @throws InvalidConfigException
      */
     public function setApiKey(string $apiKey): void
     {
         $apiKey = trim($apiKey);
         if (!(strlen($apiKey) > 0)) {
-            throw new InvalidConfigException('"' . get_class($this) . '::apiKey" length should be greater than 0.');
+            throw new InvalidConfigException('"' . static::class . '::apiKey" length should be greater than 0.');
         }
         $this->_apiKey = $apiKey;
     }
 
     /**
      * Retrieves the last response received from the SendGrid API.
-     *
-     * @return Response
      */
     public function getLastResponse(): Response
     {
@@ -116,7 +113,6 @@ class Mailer extends BaseMailer
     /**
      * @param Message $message
      *
-     * @return bool
      * @throws TypeException
      */
     public function sendMessage($message): bool

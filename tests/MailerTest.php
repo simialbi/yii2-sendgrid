@@ -16,7 +16,9 @@ class MailerTest extends TestCase
     public function testApiKeyMustBeString()
     {
         $this->expectException('TypeError');
-        new Mailer(['apiKey' => []]);
+        new Mailer([
+            'apiKey' => [],
+        ]);
     }
 
     public function testApiKeyLengthGreaterThanZero()
@@ -24,7 +26,9 @@ class MailerTest extends TestCase
         $this->expectException('\yii\base\InvalidConfigException');
         $this->expectExceptionMessage('"MarketforceInfo\SendGrid\Mailer::apiKey" length should be greater than 0');
 
-        new Mailer(['apiKey' => '']);
+        new Mailer([
+            'apiKey' => '',
+        ]);
     }
 
     public function testOptions()
@@ -36,9 +40,9 @@ class MailerTest extends TestCase
                 'version' => 'v2',
                 'impersonateSubuser' => 'hans_muster',
                 'curl' => [
-                    CURLOPT_SSL_VERIFYPEER => false
-                ]
-            ]
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ],
+            ],
         ]);
         $sendGrid = $mailer->getSendGrid();
         $this->assertEquals('https://api.eu.sendgrid.com', $sendGrid->client->getHost());
@@ -50,7 +54,9 @@ class MailerTest extends TestCase
 
     public function testGetSendGrid()
     {
-        $mailer = new Mailer(['apiKey' => 'testing']);
+        $mailer = new Mailer([
+            'apiKey' => 'testing',
+        ]);
         $this->assertInstanceOf('\SendGrid', $mailer->getSendGrid());
     }
 }

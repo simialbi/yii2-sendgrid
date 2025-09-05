@@ -9,7 +9,9 @@ use Yii;
 class MessageTest extends TestCase
 {
     private Message $_message;
+
     private string $_testImageBinary;
+
     private string $_testPdfBinary;
 
     public function testMessageInstance()
@@ -36,7 +38,7 @@ class MessageTest extends TestCase
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setTo([
             'email2@email.it' => 'fakeuser',
             'email@email.it',
-            'email3@email.it'
+            'email3@email.it',
         ]));
         $contactList = $this->_message->getTo();
         $this->assertCount(3, $contactList);
@@ -64,20 +66,28 @@ class MessageTest extends TestCase
 
         $this->assertInstanceOf(
             '\MarketforceInfo\SendGrid\Message',
-            $this->_message->setFrom(['fakeuser' => 'email4@email.it'])
+            $this->_message->setFrom([
+                'fakeuser' => 'email4@email.it',
+            ])
         );
         $this->assertEquals('My Application <email@email.it>', $this->_message->getFrom());
 
         $this->assertInstanceOf(
             '\MarketforceInfo\SendGrid\Message',
-            $this->_message->setFrom(['email2@email.it' => 'fakeuser'])
+            $this->_message->setFrom([
+                'email2@email.it' => 'fakeuser',
+            ])
         );
         $this->assertEquals('fakeuser <email2@email.it>', $this->_message->getFrom());
 
-        $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setFrom(['email3@email.it' => '']));
+        $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setFrom([
+            'email3@email.it' => '',
+        ]));
         $this->assertEquals('My Application <email3@email.it>', $this->_message->getFrom());
 
-        $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setFrom(['email4@email.it' => []]));
+        $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setFrom([
+            'email4@email.it' => [],
+        ]));
         $this->assertEquals('My Application <email4@email.it>', $this->_message->getFrom());
 
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setFrom('email@email.it'));
@@ -91,7 +101,7 @@ class MessageTest extends TestCase
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setCc([
             'email2@email.it' => 'fakeuser',
             'email@email.it',
-            'email3@email.it'
+            'email3@email.it',
         ]));
         $contactList = $this->_message->getCc();
         $this->assertCount(3, $contactList);
@@ -107,7 +117,7 @@ class MessageTest extends TestCase
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->setBcc([
             'email2@email.it' => 'fakeuser',
             'email@email.it',
-            'email3@email.it'
+            'email3@email.it',
         ]));
         $contactList = $this->_message->getBcc();
         $this->assertCount(3, $contactList);
@@ -146,7 +156,10 @@ class MessageTest extends TestCase
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->attach($this->getTestImagePath()));
         $this->assertInstanceOf(
             '\MarketforceInfo\SendGrid\Message',
-            $this->_message->attach($this->getTestImagePath(), ['fileName' => 'test2.png', 'contentType' => 'text/html'])
+            $this->_message->attach($this->getTestImagePath(), [
+                'fileName' => 'test2.png',
+                'contentType' => 'text/html',
+            ])
         );
         $this->assertInstanceOf(
             '\MarketforceInfo\SendGrid\Message',
@@ -156,13 +169,16 @@ class MessageTest extends TestCase
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->attachContent($this->getTestPdfBinary()));
         $this->assertInstanceOf(
             '\MarketforceInfo\SendGrid\Message',
-            $this->_message->attachContent($this->getTestPdfBinary(), ['fileName' => '12.txt', 'contentType' => 'image/png'])
+            $this->_message->attachContent($this->getTestPdfBinary(), [
+                'fileName' => '12.txt',
+                'contentType' => 'image/png',
+            ])
         );
 
         $attachments = $this->_message->getAttachments();
         $this->assertCount(4, $attachments);
 
-//        var_dump($attachments); exit;
+        //        var_dump($attachments); exit;
 
         $this->assertEquals($this->getTestImageBinary(true), $attachments[0][0]);
         $this->assertEquals('test.png', $attachments[0][2]);
@@ -189,10 +205,15 @@ class MessageTest extends TestCase
     {
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->embed($this->getTestImagePath()));
         $this->assertInstanceOf(
-            '\MarketforceInfo\SendGrid\Message', $this->_message->embed(
-            $this->getTestImagePath(),
-            ['fileName' => 'test2.png', 'contentType' => 'image/jpeg']
-        ));
+            '\MarketforceInfo\SendGrid\Message',
+            $this->_message->embed(
+                $this->getTestImagePath(),
+                [
+                    'fileName' => 'test2.png',
+                    'contentType' => 'image/jpeg',
+                ]
+            )
+        );
         $this->assertInstanceOf(
             '\MarketforceInfo\SendGrid\Message',
             $this->_message->embed(__DIR__ . DIRECTORY_SEPARATOR . 'asdf.png')
@@ -202,8 +223,14 @@ class MessageTest extends TestCase
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->embedContent('ancora un po'));
         $this->assertInstanceOf('\MarketforceInfo\SendGrid\Message', $this->_message->embedContent($this->getTestImageBinary()));
         $this->assertInstanceOf(
-            '\MarketforceInfo\SendGrid\Message', $this->_message->embedContent($this->getTestImageBinary(),
-            ['fileName' => '12.txt', 'contentType' => 'text/html'])
+            '\MarketforceInfo\SendGrid\Message',
+            $this->_message->embedContent(
+                $this->getTestImageBinary(),
+                [
+                    'fileName' => '12.txt',
+                    'contentType' => 'text/html',
+                ]
+            )
         );
 
         $attachments = $this->_message->getEmbeddedContent();
@@ -233,13 +260,13 @@ class MessageTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $mailer = new Mailer(['apiKey' => 'testing']);
+        $mailer = new Mailer([
+            'apiKey' => 'testing',
+        ]);
         $this->_message = $mailer->compose();
     }
 
-    /**
-     * @return string
-     */
+
     private function getTestImagePath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'test.png';
@@ -247,8 +274,6 @@ class MessageTest extends TestCase
 
     /**
      * @param boolean $encode
-     *
-     * @return string
      */
     private function getTestImageBinary(bool $encode = false): string
     {
@@ -259,9 +284,7 @@ class MessageTest extends TestCase
         return $encode ? base64_encode($this->_testImageBinary) : $this->_testImageBinary;
     }
 
-    /**
-     * @return string
-     */
+
     private function getTestPdfPath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'test.pdf';
@@ -269,8 +292,6 @@ class MessageTest extends TestCase
 
     /**
      * @param boolean $encode
-     *
-     * @return string
      */
     private function getTestPdfBinary(bool $encode = false): string
     {
