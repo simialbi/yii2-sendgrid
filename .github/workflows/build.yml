@@ -37,4 +37,4 @@ jobs:
       - name: Install dependencies with composer
         run: composer update $DEFAULT_COMPOSER_FLAGS
       - name: Run unit tests without coverage
-        run: vendor/bin/phpunit --verbose --colors=always
+        run: vendor/bin/phpunit --colors=always
