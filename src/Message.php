@@ -147,6 +147,11 @@ class Message extends BaseMessage
     private bool $_trackClicks = true;
 
     /**
+     * @var array Custom arguments to be used by SendGrid.
+     */
+    private array $_customArgs = [];
+
+    /**
      * @var array The google analytics parameters to be used by SendGrid.
      */
     private array $_googleAnalytics = [];
@@ -796,6 +801,18 @@ class Message extends BaseMessage
     }
 
     /**
+     * @return self
+     */
+    public function addCustomArg(string $key, string $value): self
+    {
+        if (!isset($this->_customArgs[$key])) {
+            $this->_customArgs[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Make the message important.
      *
      * @return static
@@ -994,6 +1011,9 @@ class Message extends BaseMessage
             } elseif (is_array($name) && ArrayHelper::isIndexed($name, true) && filter_var($name[0], FILTER_VALIDATE_EMAIL)) {
                 call_user_func_array([$mail, 'addBCc'], $name);
             }
+        }
+        foreach ($this->_customArgs as $key => $value) {
+            $mail->addCustomArg($key, $value);
         }
         if (is_array($this->_replyTo)) {
             $mail->setReplyTo($this->_replyTo[0], $this->_replyTo[1]);
