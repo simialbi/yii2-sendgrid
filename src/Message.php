@@ -699,6 +699,8 @@ class Message extends BaseMessage
      */
     public function setPersonalizations(array $personalizations): self
     {
+        $this->_personalizations = [];
+
         foreach ($personalizations as $personalization) {
             $this->addPersonalization($personalization);
         }
